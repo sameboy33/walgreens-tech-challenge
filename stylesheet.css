@@ -1,0 +1,142 @@
+#after-query-results p{
+    margin-top: 0px;
+}
+
+.content{
+    display: flex;
+    justify-content: flex-end;
+    flex-flow: wrap;
+}
+
+.content > *:not(:first-child){
+    flex: 0 0 25em;
+}
+
+button:focus {
+    /* border-radius: 12px; */
+    outline: none;
+    box-shadow: 0px 0px 2px #0066ff;
+    /* user-select: none; */
+    /* color: none;
+    background: none; */
+}
+
+#toggle-button{
+    display:inline-block;
+    padding: 1em;
+    border:0.1em solid #FFFFFF;
+    border-radius:0.12em;
+    /* background-color: black; */
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color:black;
+    text-align:center;
+    transition: all 0.2s;
+    flex-basis: auto;
+    align-self: center;
+    margin: 0 auto 0 0;
+    border-radius: 12px;
+}
+
+.selected{
+    box-shadow: 0px 0px 2px #0066ff;
+    color:#000000;
+    background-color:#FFFFFF;
+}
+
+#logo{
+    margin-right: auto;
+    width: 20%;
+}
+
+.btn-group{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto; /* Automatically centers between left side of screen and sibling toggle button */
+}
+.btn-group button{
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    padding: 10px 24px;
+    cursor: pointer;
+    flex: auto;
+}
+
+.btn-group button:not(:last-child){
+    border-bottom: none;
+}
+
+#centered{
+    display: flex;
+    justify-content: center;
+}
+
+#centered p{
+    border: 1px solid black;
+    padding: 5px;
+}
+
+#centered-2{
+    text-align: center;
+}
+
+#centered-2 p{
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid black;
+    margin-top: 0;
+}
+
+#centered-3{
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+#after-query-results{
+    text-align: center;
+}
+
+.country-widgets{
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: wrap; 
+}
+
+.widget{
+    /* border: 1px solid black; */
+    padding: 0;
+    list-style-type: none;
+    height: fit-content;
+}
+
+li{
+    padding: 5px 5px 0 5px;
+    padding-top: 5px;
+}
+
+li:not(:last-child){
+    border-bottom: 1px solid black;
+}
+
+.li-selected{
+    color: white;
+    background: darkgrey;
+}
+
+.widget-buttons{
+    display: flex;
+    flex-flow: column;
+    margin: 16px 0;
+    visibility: hidden;
+}
+
+.two-sum-input{
+    text-align: center;
+    margin-bottom: 16px;
+}
