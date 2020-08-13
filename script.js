@@ -3,6 +3,7 @@ var json;
 var leftSet = new Set();  // Set of SELECTED list items
 var rightSet = new Set();
 var retrieved = false;
+var visionKey = config.VISION_KEY;
 
 $(document).ready(function(){
     function submit(event) {
