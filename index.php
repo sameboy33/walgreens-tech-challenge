@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" 
       type="image/png" 
-      href="walgreens-logo.png">
+      href="res/walgreens-logo.png">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- <script src="jquery-3.5.1.js"></script> -->
     <script type='text/javascript' src='config.js'></script>
@@ -14,6 +14,6 @@
     <title>Walgreens Technical Assessment</title>
 </head>
 <body>
-    
+    <div class="result"></div>
 </body>
 </html>
