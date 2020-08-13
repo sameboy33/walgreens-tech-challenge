@@ -13,6 +13,7 @@
       href="walgreens-logo.png">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="jquery-3.5.1.js"></script>
+    <script type='text/javascript' src='config.js'></script>
     <script src="script.js"></script>
     <title>Walgreens Technical Assessment</title>
 </head>
