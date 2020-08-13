@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" 
       type="image/png" 
-      href="Apache-favicon.png">
+      href="walgreens-logo.png">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="jquery-3.5.1.js"></script>
     <script src="script.js"></script>
@@ -31,7 +31,7 @@
             <button type="button" onclick="toggleJSON()">Toggle Countries</button>
         </div>
         <button id="toggle-button" type="button">Toggle Logo</button>
-        <img id="logo" src="green-street-logo.png" alt="Green Street Advisors">
+        <img id="logo" src="green-street-logo.png" alt="Walgreens Logo">
     </div>
     <span id="centered"><p>This is centered with flexbox</p></span>
     <div id="centered-2">
