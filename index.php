@@ -14,6 +14,11 @@
     <title>Walgreens Technical Assessment</title>
 </head>
 <body>
+    <form action="/action_page.php">
+    <label for="img">Select image:</label>
+    <input type="file" id="img" name="img" accept="image/*">
+    <input type="submit">
+    </form>
     <div class="result"></div>
 </body>
 </html>
