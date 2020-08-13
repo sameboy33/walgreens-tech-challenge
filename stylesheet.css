@@ -1,0 +1,11 @@
+.upload{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    height: 600px;
+}
+
+h2{
+    margin-bottom: 16px;
+}

@@ -9,7 +9,16 @@ const TestImagesEnum = Object.freeze(
         "URL_ANIMAL_FACE": '{"url": "https://www.sciencemag.org/sites/default/files/styles/article_main_large/public/cc_BE6RJF_16x9.jpg"}'
     }
 );
-var image = TestImagesEnum.NO_HUMANS_IMAGE;
+
+window.addEventListener('load', function() {
+    document.querySelector('input[type="file"]').addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            var img = document.querySelector('img');  // $('img')[0]
+            img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+            img.onload = imageIsLoaded;
+        }
+    });
+});
 
 function loadXHR(url) {
     return new Promise(function(resolve, reject) {
@@ -27,78 +36,10 @@ function loadXHR(url) {
         catch(err) {reject(err.message)}
     });
 }
-
-// $(function() {
-//     loadXHR(image).then(function(imageAsBlob) {
-//         // Now that the image is a blob, call the API
-//         var params = {
-//             // Request parameters
-//             "visualFeatures": "Faces"
-//         };
-//         $.ajax({
-//             url: ENDPOINT + $.param(params),
-//             processData: false,  // prevents jQuery from converting the blob
-//             beforeSend: function(xhrObj){
-//                 // Request headers
-//                 xhrObj.setRequestHeader("Content-Type", "application/json");  // image url or binary
-//                 xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", visionKey);
-//             },
-//             type: "POST",
-//             // Request body
-//             data: image,
-//         })
-//         .done(function(data) {
-//             if(data["faces"].length){
-//                 $( ".result" ).append("<p>Image Contains " + data["faces"].length + " Human" + (data["faces"].length > 1 ? "s" : "") + "</p>");
-//                 console.log(data["faces"]);
-//             }
-//             else{
-//                 $( ".result" ).append( "<p>Image Does Not Contain Human</p>" );
-//             }
-//         })
-//         .fail(function() {
-//             console.log("Failed Analyze Image API Call");
-//         });
-//       });    
-// });
-
-
-//
-//  Face detection using URL
-//
-// var params = {
-//     // Request parameters
-//     "visualFeatures": "Categories"
-// };
-// $.ajax({
-//     url: ENDPOINT + $.param(params),
-//     processData: false,  // prevents jQuery from converting the blob
-//     beforeSend: function(xhrObj){
-//         // Request headers
-//         xhrObj.setRequestHeader("Content-Type", "application/json");  // image url or binary
-//         xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", visionKey);
-//     },
-//     type: "POST",
-//     // Request body
-//     data: image,
-// })
-// .done(function(data) {
-//     // console.log(data);
-//     let arr = Object.values(data["categories"]);
-//     if (arr.find(item => { return item.name.includes("people_"); })){
-//         $( ".result" ).append("<p>Image Contains Humans</p>");
-//     }
-//     else{
-//         $( ".result" ).append( "<p>Image Does Not Contain Humans</p>" );
-//     }
-// })
-// .fail(function() {
-//     console.log("Failed Analyze Image API Call");
-// });
-
-
-$(function() {
-    loadXHR(image).then(function(imageAsBlob) {
+  
+function imageIsLoaded() { 
+    // update width and height ...
+    loadXHR(this.src).then(function(imageAsBlob) {
         // Now that the image is a blob, call the API
         var params = {
             // Request parameters
@@ -111,6 +52,7 @@ $(function() {
                 // Request headers
                 xhrObj.setRequestHeader("Content-Type", "application/octet-stream");  // image url or binary
                 xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", visionKey);
+                $( ".result" ).html("Processing...");
             },
             type: "POST",
             // Request body
@@ -120,14 +62,14 @@ $(function() {
             console.log(data);
             let arr = Object.values(data["categories"]);
             if (arr.find(item => { return item.name.includes("people_"); })){
-                $( ".result" ).append("<p>Image Contains Humans</p>");
+                $( ".result" ).html("Image Contains Humans");
             }
             else{
-                $( ".result" ).append( "<p>Image Does Not Contain Humans</p>" );
+                $( ".result" ).html( "Image Does Not Contain Humans" );
             }
         })
         .fail(function() {
             console.log("Failed Analyze Image API Call");
         });
       });    
-});
+}

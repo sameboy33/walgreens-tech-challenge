@@ -14,11 +14,12 @@
     <title>Walgreens Technical Assessment</title>
 </head>
 <body>
-    <form action="/action_page.php">
-    <label for="img">Select image:</label>
-    <input type="file" id="img" name="img" accept="image/*">
-    <input type="submit">
-    </form>
-    <div class="result"></div>
+    <div class="upload">        
+        <h1>Welcome to The People Detector</h1>
+        <h2>Please Upload an Image</h2>
+        <img id="img-uploaded" src="#" alt="Your Image" height=100px width=100px><br>
+        <input type='file' />
+        <p class="result"></p>
+    </div>
 </body>
 </html>
