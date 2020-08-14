@@ -13,11 +13,13 @@
     <title>Walgreens Technical Assessment</title>
 </head>
 <body>
-    <div class="upload">        
-        <h1>Welcome to The People Detector</h1>
+    <div class="container">        
+        <h1>Welcome to the People Detector</h1>
         <h2>Please Upload an Image</h2>
-        <img id="img-uploaded" src="#" alt="Your Image" height=100px width=100px><br>
-        <input type='file' />
+        <div class="upload">
+            <span id="img-uploaded"><img src="res/multiple-humans.jpg" alt="Your Image"></span>
+            <input type='file' />
+        </div>
         <p class="result"></p>
     </div>
 </body>

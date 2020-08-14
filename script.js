@@ -1,5 +1,6 @@
 var visionKey = config.VISION_KEY;
 const ENDPOINT = "https://computervisionservicewag.cognitiveservices.azure.com/vision/v2.0/analyze?";
+const INPUT_TIP = "(Supported Formats: JPG, PNG, GIF and BMP)";
 const TestImagesEnum = Object.freeze(
     {
         "MULTIPLE_HUMANS_IMAGE": "res/multiple-humans.jpg",
@@ -9,6 +10,23 @@ const TestImagesEnum = Object.freeze(
         "HUMANS_ANIMALS_MIXED_IMAGE": "res/humans-and-animals.jpg"
     }
 );
+var loadingHtml = '<div class="loading__letter">P</div>\
+<div class="loading__letter">r</div>\
+<div class="loading__letter">o</div>\
+<div class="loading__letter">c</div>\
+<div class="loading__letter">e</div>\
+<div class="loading__letter">s</div>\
+<div class="loading__letter">s</div>\
+<div class="loading__letter">i</div>\
+<div class="loading__letter">n</div>\
+<div class="loading__letter">g</div>\
+<div class="loading__letter">.</div>\
+<div class="loading__letter">.</div>\
+<div class="loading__letter">.</div>';
+
+$(function(){
+    $(".result").html(INPUT_TIP);
+});
 
 window.addEventListener('load', function() {
     document.querySelector('input[type="file"]').addEventListener('change', function() {
@@ -20,8 +38,8 @@ window.addEventListener('load', function() {
                 img.onload = imageIsLoaded;
             }
             else{
-                $('#img-uploaded').attr("src", "res/invalid-warning.png");
-                $( ".result" ).html("Invalid Image Format<br>(Supported Formats: JPG, PNG, GIF and BMP)");
+                $('#img-uploaded').attr("src", "res/error-icon.png");
+                $('.result').html("Invalid Image Format<br>" + INPUT_TIP);
             }
         }
     });
@@ -59,7 +77,8 @@ function imageIsLoaded() {
                 // Request headers
                 xhrObj.setRequestHeader("Content-Type", "application/octet-stream");  // image url or binary
                 xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", visionKey);
-                $( ".result" ).html("Processing...");
+                $( ".result" ).css('color', 'unset');
+                $( ".result" ).html(loadingHtml);
             },
             type: "POST",
             // Request body
@@ -68,12 +87,20 @@ function imageIsLoaded() {
         .done(function(data) {
             console.log(data);
             let arr = Object.values(data["categories"]);
+            let msg;
+            let color;
             if (arr.find(item => { return item.name.includes("people_"); })){
-                $( ".result" ).html("Image Contains Human");
+                msg = "Image Contains Human &#10003;";
+                color = '#52c41a';
             }
             else{
-                $( ".result" ).html( "Image Does Not Contain Human" );
+                msg = "Image Does Not Contain Human &#10060;";
+                color = '#f5222d';
             }
+            $('.result').fadeOut(500, function() {
+                $(this).html(msg).fadeIn(500);
+                $(this).css('color', color);
+            });
         })
         .fail(function() {
             console.log("Failed Analyze Image API Call");
