@@ -1,5 +1,5 @@
-var visionKey = config.VISION_KEY;
-const ENDPOINT = "https://computervisionservicewag.cognitiveservices.azure.com/vision/v2.0/analyze?";
+const VISION_KEY = config.VISION_KEY;
+const ENDPOINT = config.ENDPOINT;
 const INPUT_TIP = "(Supported Formats: JPG, PNG, GIF and BMP)";
 const TestImagesEnum = Object.freeze(
     {
@@ -75,7 +75,7 @@ function imageIsLoaded() {
             beforeSend: function(xhrObj){
                 // Request headers
                 xhrObj.setRequestHeader("Content-Type", "application/octet-stream");  // image url or binary
-                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", visionKey);
+                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", VISION_KEY);
                 $( ".result" ).css('color', 'unset');
                 $( ".result" ).html(loadingHtml);
             },
@@ -102,7 +102,9 @@ function imageIsLoaded() {
             });
         })
         .fail(function() {
-            console.log("Failed Analyze Image API Call");
+            $('.result').fadeOut(500, function() {
+                $(this).html("Failed to Analyze Image").fadeIn(500);
+            });
         });
       });    
 }
