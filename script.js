@@ -45,65 +45,119 @@ window.addEventListener('load', function() {
     });
 });
 
-function loadXHR(url) {
-    return new Promise(function(resolve, reject) {
-        try {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url);
-            xhr.responseType = "blob";
-            xhr.onerror = function() {reject("Network error.")};
-            xhr.onload = function() {
-                if (xhr.status === 200) {resolve(xhr.response)}
-                else {reject("Loading error:" + xhr.statusText)}
-            };
-            xhr.send();
+// function loadXHR(url) {
+//     return new Promise(function(resolve, reject) {
+//         try {
+//             var xhr = new XMLHttpRequest();
+//             xhr.open("GET", url);
+//             xhr.responseType = "blob";
+//             xhr.onerror = function() {reject("Network error.")};
+//             xhr.onload = function() {
+//                 if (xhr.status === 200) {resolve(xhr.response)}
+//                 else {reject("Loading error:" + xhr.statusText)}
+//             };
+//             xhr.send();
+//         }
+//         catch(err) {reject(err.message)}
+//     });
+// }
+
+var img = new Image;
+var c = document.createElement("canvas");
+var ctx = c.getContext("2d");
+
+function imageIsLoaded() {
+  c.width = this.naturalWidth;     // update canvas size to match image
+  c.height = this.naturalHeight;
+  ctx.drawImage(this, 0, 0);       // draw in image
+  c.toBlob(function(imageAsBlob) {        // get content as JPEG blob
+    // here the image is a blob
+    var params = {
+        // Request parameters
+        "visualFeatures": "Categories"
+    };
+    $.ajax({
+        url: ENDPOINT + $.param(params),
+        processData: false,  // prevents jQuery from converting the blob
+        beforeSend: function(xhrObj){
+            // Request headers
+            xhrObj.setRequestHeader("Content-Type", "application/octet-stream");  // image url or binary
+            xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", visionKey);
+            $( ".result" ).css('color', 'unset');
+            $( ".result" ).html(loadingHtml);
+        },
+        type: "POST",
+        // Request body
+        data: imageAsBlob,
+    })
+    .done(function(data) {
+        console.log(data);
+        let arr = Object.values(data["categories"]);
+        let msg;
+        let color;
+        if (arr.find(item => { return item.name.includes("people_"); })){
+            msg = "Image Contains Human &#10003;";
+            color = '#52c41a';
         }
-        catch(err) {reject(err.message)}
-    });
-}
-  
-function imageIsLoaded() { 
-    // update width and height ...
-    loadXHR(this.src).then(function(imageAsBlob) {
-        // Now that the image is a blob, call the API
-        var params = {
-            // Request parameters
-            "visualFeatures": "Categories"
-        };
-        $.ajax({
-            url: ENDPOINT + $.param(params),
-            processData: false,  // prevents jQuery from converting the blob
-            beforeSend: function(xhrObj){
-                // Request headers
-                xhrObj.setRequestHeader("Content-Type", "application/octet-stream");  // image url or binary
-                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", visionKey);
-                $( ".result" ).css('color', 'unset');
-                $( ".result" ).html(loadingHtml);
-            },
-            type: "POST",
-            // Request body
-            data: imageAsBlob,
-        })
-        .done(function(data) {
-            console.log(data);
-            let arr = Object.values(data["categories"]);
-            let msg;
-            let color;
-            if (arr.find(item => { return item.name.includes("people_"); })){
-                msg = "Image Contains Human &#10003;";
-                color = '#52c41a';
-            }
-            else{
-                msg = "Image Does Not Contain Human &#10060;";
-                color = '#f5222d';
-            }
-            $('.result').fadeOut(500, function() {
-                $(this).html(msg).fadeIn(500);
-                $(this).css('color', color);
-            });
-        })
-        .fail(function() {
-            console.log("Failed Analyze Image API Call");
+        else{
+            msg = "Image Does Not Contain Human &#10060;";
+            color = '#f5222d';
+        }
+        $('.result').fadeOut(500, function() {
+            $(this).html(msg).fadeIn(500);
+            $(this).css('color', color);
         });
-      });    
-}
+    })
+    .fail(function() {
+        console.log("Failed Analyze Image API Call");
+    });    
+  }, "image/jpeg", 0.75);
+};
+img.crossOrigin = "";              // if from different origin
+img.src = TestImagesEnum.MULTIPLE_HUMANS_IMAGE;
+  
+// function imageIsLoaded() { 
+//     // update width and height ...
+//     loadXHR(this.src).then(function(imageAsBlob) {
+//         // Now that the image is a blob, call the API
+//         var params = {
+//             // Request parameters
+//             "visualFeatures": "Categories"
+//         };
+//         $.ajax({
+//             url: ENDPOINT + $.param(params),
+//             processData: false,  // prevents jQuery from converting the blob
+//             beforeSend: function(xhrObj){
+//                 // Request headers
+//                 xhrObj.setRequestHeader("Content-Type", "application/octet-stream");  // image url or binary
+//                 xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", visionKey);
+//                 $( ".result" ).css('color', 'unset');
+//                 $( ".result" ).html(loadingHtml);
+//             },
+//             type: "POST",
+//             // Request body
+//             data: imageAsBlob,
+//         })
+//         .done(function(data) {
+//             console.log(data);
+//             let arr = Object.values(data["categories"]);
+//             let msg;
+//             let color;
+//             if (arr.find(item => { return item.name.includes("people_"); })){
+//                 msg = "Image Contains Human &#10003;";
+//                 color = '#52c41a';
+//             }
+//             else{
+//                 msg = "Image Does Not Contain Human &#10060;";
+//                 color = '#f5222d';
+//             }
+//             $('.result').fadeOut(500, function() {
+//                 $(this).html(msg).fadeIn(500);
+//                 $(this).css('color', color);
+//             });
+//         })
+//         .fail(function() {
+//             console.log("Failed Analyze Image API Call");
+//         });
+//       });    
+// }
