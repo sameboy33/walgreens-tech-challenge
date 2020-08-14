@@ -63,7 +63,6 @@ function loadXHR(url) {
 }
 
 function imageIsLoaded() { 
-    // update width and height ...
     loadXHR(this.src).then(function(imageAsBlob) {
         // Now that the image is a blob, call the API
         var params = {
